@@ -13,7 +13,9 @@ module.exports = {
     "eslint:recommended",
     "@vue/eslint-config-airbnb-with-typescript",
     "@vue/eslint-config-prettier",
-    "@vue/typescript/recommended"
+    "@vue/typescript/recommended",
+    "@vue/prettier",
+    "@vue/prettier/@typescript-eslint"
   ],
 
   parserOptions: {
