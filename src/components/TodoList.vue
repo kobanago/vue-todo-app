@@ -1,6 +1,12 @@
 <script setup lang="ts">
-import { ref } from 'vue';
-const todos = ref([
+import { type Ref, ref } from 'vue';
+
+type Todos = {
+  value: string;
+  done: boolean;
+};
+
+const todos: Ref<Todos[]> = ref([
   {
     value: 'Vueをマスターする',
     done: true,
@@ -14,8 +20,8 @@ const todos = ref([
     done: false,
   },
 ]);
-const text = ref('');
-const isDoneShowFlg = ref(true);
+const text: Ref<string> = ref('');
+const isDoneShowFlg: Ref<boolean> = ref(true);
 const handleClickAddTask = () => {
   if (!text.value) {
     alert('タスクを入力してください');
@@ -29,9 +35,9 @@ const handleClickAddTask = () => {
 <template>
   <h1>Users Data</h1>
   <div>
-    <input type="text" placeholder="入力してください" v-model="text" />
+    <input v-model="text" type="text" placeholder="入力してください" />
     <button type="button" @click="handleClickAddTask">追加</button>
-    <button type="button" @click="isDoneShowFlg = !isDoneShowFlg" :flg="isDoneShowFlg">
+    <button type="button" :flg="isDoneShowFlg" @click="isDoneShowFlg = !isDoneShowFlg">
       完了済みを{{ isDoneShowFlg ? '非表示' : '表示' }}
     </button>
   </div>
@@ -42,7 +48,7 @@ const handleClickAddTask = () => {
       :class="{ 'todo-done': todo.done }"
     >
       {{ todo.value }}
-      <input type="checkbox" v-model="todo.done" />
+      <input v-model="todo.done" type="checkbox" />
     </li>
   </ul>
 </template>
