@@ -33,24 +33,37 @@ const handleClickAddTask = () => {
 </script>
 
 <template>
-  <h1>Users Data</h1>
-  <div>
-    <input v-model="text" type="text" placeholder="入力してください" />
-    <button type="button" @click="handleClickAddTask">追加</button>
-    <button type="button" :flg="isDoneShowFlg" @click="isDoneShowFlg = !isDoneShowFlg">
-      完了済みを{{ isDoneShowFlg ? '非表示' : '表示' }}
-    </button>
-  </div>
-  <ul>
-    <li
+  <v-row justify="center">
+    <v-col cols="12">
+      <h1 class="text-center">ToDoリスト</h1>
+    </v-col>
+  </v-row>
+  <v-row justify="center">
+    <v-col cols="12">
+      <v-text-field v-model="text" hide-details="auto" label="タスク"></v-text-field>
+    </v-col>
+    <v-col cols="12">
+      <v-btn class="mx-1" type="button" @click="handleClickAddTask">追加</v-btn>
+      <v-btn
+        class="mx-1"
+        type="button"
+        :flg="isDoneShowFlg"
+        @click="isDoneShowFlg = !isDoneShowFlg"
+      >
+        完了済みを{{ isDoneShowFlg ? '非表示' : '表示' }}
+      </v-btn>
+    </v-col>
+  </v-row>
+  <v-card class="ma-4" max-width="300">
+    <v-list
       v-for="(todo, index) in isDoneShowFlg ? todos : todos.filter((todo) => !todo.done)"
       :key="index"
       :class="{ 'todo-done': todo.done }"
     >
       {{ todo.value }}
       <input v-model="todo.done" type="checkbox" />
-    </li>
-  </ul>
+    </v-list>
+  </v-card>
 </template>
 
 <style>
