@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { type Ref, ref } from 'vue';
+import { type ComputedRef, type Ref, computed, ref } from 'vue';
 
 type Todos = {
   value: string;
@@ -22,6 +22,10 @@ const todos: Ref<Todos[]> = ref([
 ]);
 const text: Ref<string> = ref('');
 const isDoneShowFlg: Ref<boolean> = ref(true);
+const usedForShowTask: ComputedRef<Todos[]> = computed(() => {
+  return isDoneShowFlg.value ? todos.value : todos.value.filter((todo: Todos) => !todo.done);
+});
+
 const handleClickAddTask = () => {
   if (!text.value) {
     alert('タスクを入力してください');
@@ -56,7 +60,7 @@ const handleClickAddTask = () => {
   </v-row>
   <v-card class="ma-4" max-width="300">
     <v-list
-      v-for="(todo, index) in isDoneShowFlg ? todos : todos.filter((todo) => !todo.done)"
+      v-for="(todo, index) in usedForShowTask"
       :key="index"
       :class="{ 'todo-done': todo.done }"
     >
