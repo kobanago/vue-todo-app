@@ -1,56 +1,73 @@
 <script setup lang="ts">
-import { type Ref, ref } from 'vue';
+import { type ComputedRef, type Ref, computed, ref } from 'vue';
 
 type Todos = {
+  id: number;
   value: string;
   done: boolean;
 };
 
 const todos: Ref<Todos[]> = ref([
   {
+    id: 1,
     value: 'Vueをマスターする',
     done: true,
   },
   {
+    id: 2,
     value: '牛乳を買う',
     done: false,
   },
   {
+    id: 3,
     value: '家賃を払う',
     done: false,
   },
 ]);
 const text: Ref<string> = ref('');
 const isDoneShowFlg: Ref<boolean> = ref(true);
+const usedForShowTask: ComputedRef<Todos[]> = computed(() => {
+  return isDoneShowFlg.value ? todos.value : todos.value.filter((todo: Todos) => !todo.done);
+});
+
 const handleClickAddTask = () => {
   if (!text.value) {
     alert('タスクを入力してください');
     return;
   }
-  todos.value.push({ value: text.value, done: false });
+  todos.value.push({ id: todos.value.length + 1, value: text.value, done: false });
   text.value = '';
 };
 </script>
 
 <template>
-  <h1>Users Data</h1>
-  <div>
-    <input v-model="text" type="text" placeholder="入力してください" />
-    <button type="button" @click="handleClickAddTask">追加</button>
-    <button type="button" :flg="isDoneShowFlg" @click="isDoneShowFlg = !isDoneShowFlg">
-      完了済みを{{ isDoneShowFlg ? '非表示' : '表示' }}
-    </button>
-  </div>
-  <ul>
-    <li
-      v-for="(todo, index) in isDoneShowFlg ? todos : todos.filter((todo) => !todo.done)"
-      :key="index"
-      :class="{ 'todo-done': todo.done }"
-    >
+  <v-row justify="center">
+    <v-col cols="12">
+      <h1 class="text-center">ToDoリスト</h1>
+    </v-col>
+  </v-row>
+  <v-row justify="center">
+    <v-col cols="12">
+      <v-text-field v-model="text" hide-details="auto" label="タスク"></v-text-field>
+    </v-col>
+    <v-col cols="12">
+      <v-btn class="mx-1" type="button" @click="handleClickAddTask">追加</v-btn>
+      <v-btn
+        class="mx-1"
+        type="button"
+        :flg="isDoneShowFlg"
+        @click="isDoneShowFlg = !isDoneShowFlg"
+      >
+        完了済みを{{ isDoneShowFlg ? '非表示' : '表示' }}
+      </v-btn>
+    </v-col>
+  </v-row>
+  <v-card class="ma-4" max-width="300">
+    <v-list v-for="todo in usedForShowTask" :key="todo.id" :class="{ 'todo-done': todo.done }">
       {{ todo.value }}
       <input v-model="todo.done" type="checkbox" />
-    </li>
-  </ul>
+    </v-list>
+  </v-card>
 </template>
 
 <style>
