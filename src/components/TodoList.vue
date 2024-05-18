@@ -2,20 +2,24 @@
 import { type ComputedRef, type Ref, computed, ref } from 'vue';
 
 type Todos = {
+  id: number;
   value: string;
   done: boolean;
 };
 
 const todos: Ref<Todos[]> = ref([
   {
+    id: 1,
     value: 'Vueをマスターする',
     done: true,
   },
   {
+    id: 2,
     value: '牛乳を買う',
     done: false,
   },
   {
+    id: 3,
     value: '家賃を払う',
     done: false,
   },
@@ -31,7 +35,7 @@ const handleClickAddTask = () => {
     alert('タスクを入力してください');
     return;
   }
-  todos.value.push({ value: text.value, done: false });
+  todos.value.push({ id: todos.value.length + 1, value: text.value, done: false });
   text.value = '';
 };
 </script>
@@ -59,11 +63,7 @@ const handleClickAddTask = () => {
     </v-col>
   </v-row>
   <v-card class="ma-4" max-width="300">
-    <v-list
-      v-for="(todo, index) in usedForShowTask"
-      :key="index"
-      :class="{ 'todo-done': todo.done }"
-    >
+    <v-list v-for="todo in usedForShowTask" :key="todo.id" :class="{ 'todo-done': todo.done }">
       {{ todo.value }}
       <input v-model="todo.done" type="checkbox" />
     </v-list>
