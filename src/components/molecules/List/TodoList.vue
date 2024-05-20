@@ -1,14 +1,12 @@
 <script setup lang="ts">
-import type { Todos } from '@/types';
-import { type ComputedRef, computed } from 'vue';
+import type { TodoContext, Todos } from '@/types';
+import { type ComputedRef, computed, inject } from 'vue';
 
-type Props = {
-  todos: Todos[];
-  isDoneShowFlg: boolean;
-};
-const props: Props = defineProps<Props>();
+const todoContext: TodoContext | undefined = inject('todoContext');
 const usedForShowTask: ComputedRef<Todos[]> = computed(() => {
-  return props.isDoneShowFlg ? props.todos : props.todos.filter((todo: Todos) => !todo.done);
+  if (!todoContext) throw new Error('todoContext is not provided');
+  const { todos, isDoneShowFlg }: TodoContext = todoContext;
+  return isDoneShowFlg.value ? todos.value : todos.value.filter((todo: Todos) => !todo.done);
 });
 </script>
 

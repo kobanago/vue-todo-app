@@ -2,7 +2,7 @@
 import ExecuteTodoList from '@/components/molecules/Form/ExecuteTodoList.vue';
 import TodoList from '@/components/molecules/List/TodoList.vue';
 import type { Todos } from '@/types';
-import { type Ref, ref } from 'vue';
+import { type Ref, provide, ref } from 'vue';
 
 const todos: Ref<Todos[]> = ref([
   { id: 1, value: 'Vueをマスターする', done: true },
@@ -16,6 +16,7 @@ const addTodo = (newTask: string) => {
 const switchDoneShow = () => {
   isDoneShowFlg.value = !isDoneShowFlg.value;
 };
+provide('todoContext', { todos, isDoneShowFlg });
 </script>
 
 <template>
@@ -24,13 +25,8 @@ const switchDoneShow = () => {
       <h1 class="text-center">ToDoリスト</h1>
     </v-col>
   </v-row>
-  <ExecuteTodoList
-    :todos="todos"
-    :is-done-show-flg="isDoneShowFlg"
-    @add-todo="addTodo"
-    @switch-done-show="switchDoneShow"
-  />
-  <TodoList :todos="todos" :is-done-show-flg="isDoneShowFlg" />
+  <ExecuteTodoList @add-todo="addTodo" @switch-done-show="switchDoneShow" />
+  <TodoList />
 </template>
 
 <style>
