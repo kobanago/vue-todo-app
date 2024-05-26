@@ -13,6 +13,6 @@ const { isDoneShowFlg }: TodoContext = todoContext;
 
 <template>
   <v-btn class="mx-1" type="button" :flg="isDoneShowFlg" @click="$emit('switchDoneShow')">
-    完了済みを{{ isDoneShowFlg ? '非表示' : '表示' }}
+    <slot name="doneTodoShow" :flg="isDoneShowFlg"></slot>
   </v-btn>
 </template>

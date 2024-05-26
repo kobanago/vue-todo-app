@@ -28,7 +28,9 @@ const switchDoneShow = () => emit('switchDoneShow');
     </v-col>
     <v-col cols="12">
       <AddTodoButton @add-todo="addTodo" />
-      <DoneTodoSwitchButton @switch-done-show="switchDoneShow" />
+      <DoneTodoSwitchButton @switch-done-show="switchDoneShow">
+        <template #doneTodoShow="{ flg }"> 完了済みを{{ flg ? '非表示' : '表示' }} </template>
+      </DoneTodoSwitchButton>
     </v-col>
   </v-row>
 </template>
